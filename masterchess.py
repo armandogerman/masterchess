@@ -5,6 +5,8 @@ import json
 from random import randint
 import sys
 import websockets
+#from turn import Turn, Move
+from masterchess_main import mov
 
 
 async def send(websocket, action, data):
@@ -31,7 +33,7 @@ async def play(websocket):
         try:
             response = await websocket.recv()
             print(f"< {response}")
-            data = json.loads(response)
+            data = json.loads(response)         # parse "response" for convert str in dict
             if data['event'] == 'update_user_list':
                 pass
             if data['event'] == 'gameover':
@@ -46,16 +48,21 @@ async def play(websocket):
                     },
                 )
             if data['event'] == 'your_turn':
+                mov(data)
+                fr = randint(0, 15),
+                fc = randint(0, 15),
+                tr = randint(0, 15),
+                tc = randint(0, 15),
                 await send(
                     websocket,
                     'move',
                     {
                         'board_id': data['data']['board_id'],
                         'turn_token': data['data']['turn_token'],
-                        'from_row': randint(0, 15),
-                        'from_col': randint(0, 15),
-                        'to_row': randint(0, 15),
-                        'to_col': randint(0, 15),
+                        'from_row': fr,
+                        'from_col': fc,
+                        'to_row': tr,
+                        'to_col': tc,
                     },
                 )
 
