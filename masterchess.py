@@ -5,9 +5,7 @@ import json
 from random import randint
 import sys
 import websockets
-#from turn import Turn, Move
-from masterchess_main import mov
-
+from masterchess_main import mov, fromto
 
 async def send(websocket, action, data):
     message = json.dumps(
@@ -48,21 +46,18 @@ async def play(websocket):
                     },
                 )
             if data['event'] == 'your_turn':
-                mov(data)
-                fr = randint(0, 15),
-                fc = randint(0, 15),
-                tr = randint(0, 15),
-                tc = randint(0, 15),
+                fromto = mov(data)
+                print("la magia esta aca:", fromto)
                 await send(
                     websocket,
                     'move',
                     {
                         'board_id': data['data']['board_id'],
                         'turn_token': data['data']['turn_token'],
-                        'from_row': fr,
-                        'from_col': fc,
-                        'to_row': tr,
-                        'to_col': tc,
+                        'from_row': fromto[0],
+                        'from_col': fromto[1],
+                        'to_row': fromto[2],
+                        'to_col': fromto[3],
                     },
                 )
 

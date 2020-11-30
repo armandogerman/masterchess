@@ -11,19 +11,24 @@ class Turn:
         self.board = data['data']["board"]                             # rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrpppppppppppppppppppppppppppppppp                                                                                                                                PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPRRHHBBQQKKBBHHRRRRHHBBQQKKBBHHRR
         self.move_left = data['data']["move_left"]                     # 199
         self.opponent_username = data['data']["opponent_username"]     # armandogerman
+    def mov(self):
+        if self.actual_turn == white:
+            if self.board
 
 
-class Move:
-    def __init__(self,data):
-        self.board_id = data['data']['board_id']                       # 8deca84e-ab14-493b-9e6c-98bc0f3072ff
-        self.turn_token = data['data']["turn_token"]                   # 7e68c0b0-ad81-4b31-956c-fd595755ea34
-        self.board = data['data']["board"]
-        self.from_row = 6
-        self.from_col = 3
-        self.to_row = 6
-        self.to_col = 4
-    def __str__(self):
-        pass
+        
+
+#class Move:
+#    def __init__(self,data):
+#        self.board_id = data['data']['board_id']                       # 8deca84e-ab14-493b-9e6c-98bc0f3072ff
+#        self.turn_token = data['data']["turn_token"]                   # 7e68c0b0-ad81-4b31-956c-fd595755ea34
+#        self.board = data['data']["board"]
+#        self.from_row = 6
+#        self.from_col = 3
+#        self.to_row = 6
+#        self.to_col = 4
+#    def __str__(self):
+#        pass
         #if ['data']['actual_turn'] == white
         #    if ['data']['board'] = 
         
