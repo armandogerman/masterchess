@@ -47,7 +47,6 @@ async def play(websocket):
                 )
             if data['event'] == 'your_turn':
                 fromto = mov(data)
-                print("la magia esta aca:", fromto)
                 await send(
                     websocket,
                     'move',
