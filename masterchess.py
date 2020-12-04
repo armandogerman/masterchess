@@ -47,6 +47,9 @@ async def play(websocket):
                 )
             if data['event'] == 'your_turn':
                 fromto = mov(data)
+                print("FROM",fromto[0],fromto[1],"TO",fromto[2],fromto[3])
+                print(data['data']['board_id'], data['data']['turn_token'])
+                print("*****************************************************")
                 await send(
                     websocket,
                     'move',

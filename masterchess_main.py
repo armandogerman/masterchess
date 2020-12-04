@@ -1,11 +1,7 @@
 import websockets
-from random import randint
+from turn import calc
 #from masterchess import fr,fc,tr,tc
 #data = {"event":"your_turn","data":{"board_id":"tournament:4e4cf244-6dc4-4ade-8622-7f2dfa5290d8::41e005a2-7829-43e0-86bc-161544b79bb4","turn_token":"183286cc-ed27-4470-a89b-14430c510bf2","username":"armandogerman","actual_turn":"black","board":"rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrpppppppppppppppppppppppppppppppp                                                  Q                                              P                              P P PPPPPPPPPPPPPPPPPPPPPPPPPPPPRRHHBBQQKKBBHHRRRRHHBBQQKKBBHHRR","move_left":190,"opponent_username":"EnzoC"}}
-fromr = ''
-fromc = ''
-tor = ''
-toc = ''
 fromto = ()
 
 def mov(data):
@@ -21,14 +17,24 @@ def mov(data):
     print('\n',mboard[0:16],'\n', mboard[16:32],'\n',mboard[32:48],'\n',mboard[48:64],'\n',mboard[64:80],'\n',mboard[80:96],'\n',mboard[96:112],'\n',mboard[112:128],'\n',mboard[128:144],'\n',mboard[144:160],'\n',mboard[160:176],'\n',mboard[176:192],'\n',mboard[192:208],'\n',mboard[208:224],'\n',mboard[224:240],'\n',mboard[224:240],'\n',mboard[240:256])
     print("*****************************************************")
     if username == "armandogerman":
+        fromto = calc(actual_turn, mboard)
+        fr=fromto[0]                                               #Asigno la tupla from
+        to=fromto[1]                                               #Asigno la tupla to
+        print(fr[0],fr[1],to[0],to[1])
+        print("pieza que se Seleccionada:", mboard[fr[1]+fr[0]*16])
+    return fr[0],fr[1],to[0],to[1]
+
+'''
+    if username == "armandogerman":
         if actual_turn == "black":
             print("hello black")
             fromr = int(3)
             fromc = int(randint(0, 15))
             tor = int(5)
             toc = int(fromc)
-            print("from:",fromr,"-",fromc,"to:",tor,"-",toc)
+            calcmov = calc(mboard,actual_turn) 
             fromto = fromr, fromc, tor, toc
+            print("from:",fromto[1],"-",fromto[0],"to:",fromto[3],"-",fromto[2])
             print("pieza que se Mueve:", mboard[fromc+fromr*16])
             return fromto
         else:
@@ -41,3 +47,4 @@ def mov(data):
             fromto = fromr, fromc, tor, toc
             print("pieza que se Mueve:", mboard[fromc+fromr*16])
             return fromto
+'''
