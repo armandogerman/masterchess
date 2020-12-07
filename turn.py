@@ -32,7 +32,7 @@ def pawneatw(mboard,actual_turn):
     return None
 def pawneatb(mboard,actual_turn):
     n=0
-    while n <= 256:
+    while n <= 143:
         i = 255 - n
         if mboard[i] == 'p':
             if mboard[i+15] != ' ' and not(pieza_aliada(mboard[i+15],actual_turn)):
@@ -53,7 +53,7 @@ def pawneat(mboard,actual_turn):
     return None
 def pawnmove(mboard,actual_turn):
     if actual_turn == "white":
-        i=0
+        i=143
         while i <= 256:
             if mboard[i] == 'P':
                 if i > 191:
@@ -62,42 +62,41 @@ def pawnmove(mboard,actual_turn):
                             print("pawn: x+2,y",i)
                             return position(i), position(i-32)
                 elif i <= 191:
-                    print("pawn: x+1,y")
+                    print("pawn: x+1,y",i)
                     if mboard[i-16] == ' ':
                         return position(i),position(i-16)
             i += 1
     elif actual_turn == "black":
-        n=0
+        n=143
         while n <= 255:
             i=255-n
             if mboard[i] == 'p':
                 if i < 64:
                     if mboard[i+32] == ' ':
                         if mboard[i+16] == ' ':
-                            print("pawn: x+2,y")                         
+                            print("pawn: x+2,y",i)                         
                             return position(i),position(i+32)
                 elif i >= 64:
                     if mboard[i+16] == ' ':
-                        print("pawn: x+1,y")
+                        print("pawn: x+1,y",i)
                         return position(i),position(i+16)
             n += 1
   
-def select_pawn(actual_turn,mboard):
-    if pawneat(actual_turn,mboard) != None:
-        return pawneat(actual_turn, mboard)
-    if pawnmove(actual_turn,mboard) != None and pawneat(actual_turn,mboard) == None:
-       return pawnmove(actual_turn, mboard)
+def select_pawn(mboard,actual_turn):
+    if pawneat(mboard,actual_turn) != None:
+        return pawneat(mboard,actual_turn)
+    if pawnmove(mboard,actual_turn) != None and pawneat(mboard,actual_turn) == None:
+        return pawnmove(mboard,actual_turn)
                    
-def calc(actual_turn, mboard):
+def calc(mboard,actual_turn):
     if actual_turn == "black":
         print("hello black")
-        fromto = select_pawn(actual_turn, mboard)
+        fromto = select_pawn(mboard,actual_turn)
         return fromto
     else:
         print("hello white")
-        fromto = select_pawn(actual_turn, mboard)
+        fromto = select_pawn(mboard,actual_turn)
         return fromto
-
 
 '''
 def select_pawn(actual_turn,mboard):
