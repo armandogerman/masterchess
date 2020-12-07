@@ -56,10 +56,10 @@ async def play(websocket):
                     {
                         'board_id': data['data']['board_id'],
                         'turn_token': data['data']['turn_token'],
-                        'from_row': fromto[0],
-                        'from_col': fromto[1],
-                        'to_row': fromto[2],
-                        'to_col': fromto[3],
+                        'from_row': int(fromto[0]),
+                        'from_col': int(fromto[1]),
+                        'to_row': int(fromto[2]),
+                        'to_col': int(fromto[3]),
                     },
                 )
 
