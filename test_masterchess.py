@@ -1,5 +1,5 @@
 import unittest
-from masterchess import position,pieza_aliada,pawnmove,pawneat,rookmovehw,rookmovehb,rookmovevw,rookmovevb,rookmovevwup,rookmovevwdown
+from masterchess import position,pieza_aliada,pawnmove,pawneat,rookmovehw,rookmovehb,rookmovevw,rookmovevb,rookmovevwup,rookmovevwdown,bishopmovebright,bishopmovebleft,bishopmovewright,bishopmovebleftdown,bishopmovebrightdown,bishopmovewrightdown,bishopmovewleftdown,strategy
 
 class masterchess_position(unittest.TestCase):
     def test_position(self):
@@ -84,12 +84,18 @@ class masterchess_pawneat(unittest.TestCase):
         actual = pawneat(mboard,"white")
         esperado = None
         self.assertEqual(actual,esperado)
+    def test_pawneat7(self):
+        mboard="rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrpppppppppppppppppppppppppppppppp                                                                                                                                PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPRRHHBBQQKKBBHHRRRRHHBBQQKKBBHHRR"
+        actual = pawneat(mboard,"black")
+        esperado = None
+        self.assertEqual(actual,esperado)
 class masterchess_rookmovehw(unittest.TestCase):
     def test_rookmovehw(self):
         mboard="rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrpppppppppppppppppppppppppppppppp                                                                                                                                PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPRRHHBBQQKKBBHHRRRRHHBBQQKKBBHHRR"
         actual = rookmovehw(mboard,"white")
         esperado = None
-        self.assertEqual(actual,esperado)   
+        self.assertEqual(actual,esperado)
+
 class masterchess_rookmovehb(unittest.TestCase):
     def test_rookmovehb(self):
         mboard="rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrpppppppppppppppppppppppppppppppp                                                                                                                                PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPRRHHBBQQKKBBHHRRRRHHBBQQKKBBHHRR"
@@ -138,6 +144,58 @@ class masterchess_rookmovevbdown(unittest.TestCase):
         esperado = ((7, 15), (12, 15))
         self.assertEqual(actual,esperado)
 
+
+
+class masterchess_bishopmovebright(unittest.TestCase):
+    def test_bishopmovebright(self):
+        mboard = "rrhhbbqqkQbbhhrrrrhhbbqqk bbhhrrp         ppppppppppppp                                                                q                                                                                  PPPPPPPPPPPPPP       PRRHHBBQQ KBBHHRRRRHHBBQQqKBBHHRR"
+        actual = bishopmovebright(mboard,"black")
+        esperado = ((15, 8), (14, 9))
+        self.assertEqual(actual,esperado)
+class masterchess_bishopmovebleft(unittest.TestCase):
+    def test_bishopmovebleft(self):
+        mboard = "rrhhbbqqkQbbhhrrrrhhbbqqk bbhhrrp         ppppppppppppp                                                                q                                                                                  PPPPPPPPPPPPPP       PRRHHBBQQ KBBHHRRRRHHBBQQqKBBHHRR"
+        actual = bishopmovebleft(mboard,"black")
+        esperado = ((15, 8), (14, 7))
+        self.assertEqual(actual,esperado)
+class masterchess_bishopmovewright(unittest.TestCase):
+    def test_bishopmovewright(self):
+        mboard = "rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrp        Qppppppppppppp                                p                                                                                                                  PPPPPPPPPPPPPP       PRRHHBBQQ KBBHHRRRRHHBBQQqKBBHHRR"
+        actual = bishopmovewright(mboard,"white")
+        esperado = ((2, 9), (1, 10))
+        self.assertEqual(actual,esperado)
+
+class masterchess_bishopmovebrightdown(unittest.TestCase):
+    def test_bishopmovebrightdown(self):
+        mboard = "rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrp       pppppppppppppppp                                                                q             Q                                                                 PPPPPPPPPPPPPPPP       PRRHHBBQQKKBBHHRRRRHHBBQQKKBBHHRR"
+        actual = bishopmovebrightdown(mboard,"black")
+        esperado = ((7, 8), (12, 13))
+        self.assertEqual(actual,esperado)
+class masterchess_bishopmovebleftdown(unittest.TestCase):
+    def test_bishopmovebleftdown(self):
+        mboard = "rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrp       pppppppppppppppp                                                                q             Q                                                                 PPPPPPPPPPPPPPPP       PRRHHBBQQKKBBHHRRRRHHBBQQKKBBHHRR"
+        actual = bishopmovebleftdown(mboard,"black")
+        esperado = ((7, 8), (13, 2))
+        self.assertEqual(actual,esperado)
+class masterchess_bishopmovewrightdown(unittest.TestCase):
+    def test_bishopmovewrightdown(self):
+        mboard = "rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrpppppppppppppppppQpppppppp                                     pppppppp                            PPPPPPPPPPPPP                                                               PPPPPPPPPPPPPPqPPPPRRHHBBQQKKBBHHRRRRHHBBQQKKBBHHRR"
+        actual = bishopmovewrightdown(mboard,"white")
+        esperado = ((3, 1), (6, 4))
+        self.assertEqual(actual,esperado)
+class masterchess_bishopmovewleftdown(unittest.TestCase):
+    def test_bishopmovewleftdown(self):
+        mboard = "rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrppppppppppppppppppppppppppQ                                     pppppppp                            PPPPPPPPPPPPP                                                               PPPPPPPPPPPPPPqPPPPRRHHBBQQKKBBHHRRRRHHBBQQKKBBHHRR"
+        actual = bishopmovewleftdown(mboard,"white")
+        esperado = ((3, 10), (2, 11))
+        self.assertEqual(actual,esperado)
+
+class masterchess_strategy(unittest.TestCase):
+    def test_strategy(self):
+        mboard = "rrhhbbqqkk Qhhrrrrhhbbqqkq  hhrrp          pppppppppppp                                                                                                                                                    PPPPPPPPPPPP        PRRHHBBQ q BBHHRRRRHHBBQ   BBHHRR"
+        actual = strategy(mboard,"black")
+        esperado = ((3, 6), (5, 6))
+        self.assertEqual(actual,esperado)
 
 
 if __name__ == "__main__":
