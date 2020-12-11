@@ -1,5 +1,5 @@
 import unittest
-from masterchess import position,pieza_aliada,pawnmove,pawneat,rookmovehw,rookmovehb,rookmovevw,rookmovevb,rookmovevwup,rookmovevwdown,bishopmovebright,bishopmovebleft,bishopmovewright,bishopmovebleftdown,bishopmovebrightdown,bishopmovewrightdown,bishopmovewleftdown,strategy
+from masterchess import position,pieza_aliada,pawnmove,pawneat,rookmovehw,rookmovehb,rookmovevw,rookmovevb,rookmovevwup,rookmovevwdown,bishopmovebright,bishopmovebleft,bishopmovewright,bishopmovebleftdown,bishopmovebrightdown,bishopmovewrightdown,bishopmovewleftdown,strategy,rookmovehbleft
 
 class masterchess_position(unittest.TestCase):
     def test_position(self):
@@ -107,6 +107,12 @@ class masterchess_rookmovehb(unittest.TestCase):
         actual = rookmovehb(mboard,"black")
         esperado = None
         self.assertEqual(actual,esperado)
+class masterchess_rookmovehbleft(unittest.TestCase):
+    def test_rookmovehbleft(self):
+        mboard="              Qr                                                                                                               r                                       P                                        P                      Q        R               "
+        actual = rookmovehbleft(mboard,"black")
+        esperado = ((0, 15), (0, 14))
+        self.assertEqual(actual,esperado)
 class masterchess_rookmovevwdown(unittest.TestCase):
     def test_rookmovevwdown(self):
         mboard="rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrpppppppppppppppppppppppppppppppp                                                                                                                                PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPRRHHBBQQKKBBHHRRRRHHBBQQKKBBHHRR"
@@ -165,6 +171,7 @@ class masterchess_bishopmovewright(unittest.TestCase):
         esperado = ((2, 9), (1, 10))
         self.assertEqual(actual,esperado)
 
+
 class masterchess_bishopmovebrightdown(unittest.TestCase):
     def test_bishopmovebrightdown(self):
         mboard = "rrhhbbqqkkbbhhrrrrhhbbqqkkbbhhrrp       pppppppppppppppp                                                                q             Q                                                                 PPPPPPPPPPPPPPPP       PRRHHBBQQKKBBHHRRRRHHBBQQKKBBHHRR"
@@ -189,12 +196,12 @@ class masterchess_bishopmovewleftdown(unittest.TestCase):
         actual = bishopmovewleftdown(mboard,"white")
         esperado = ((3, 10), (2, 11))
         self.assertEqual(actual,esperado)
-
+#change with the strategy
 class masterchess_strategy(unittest.TestCase):
     def test_strategy(self):
-        mboard = "rrhhbbqqkk Qhhrrrrhhbbqqkq  hhrrp          pppppppppppp                                                                                                                                                    PPPPPPPPPPPP        PRRHHBBQ q BBHHRRRRHHBBQ   BBHHRR"
-        actual = strategy(mboard,"black")
-        esperado = ((3, 6), (5, 6))
+        mboard = "Q             RQ                                                                                                                                                                                                                               Rq HHBBQQKKBBHHRR"
+        actual = strategy(mboard,"white")
+        esperado = ((0, 0), (15, 0))
         self.assertEqual(actual,esperado)
 
 
