@@ -9,6 +9,13 @@ def position(i):                #this function transform the chessboard and retu
         colum = i-(j*16)
         if colum<16 and colum>=0:
             return j,colum
+def whatpiece(position):                #this function transform the chessboard and returns (x,y) coordinates
+    if position == None:
+        return None
+    positionto = position[1]
+    i=int(positionto[1]+positionto[0]*16)
+    return i
+
 def pieza_aliada(pa,co):        #returns the color of the piece. True is for the aliated piece.
     if co=="white":
         if pa=="p" or pa=="r" or pa=="h" or pa=="b" or pa=="q" or pa=="k":
@@ -18,6 +25,7 @@ def pieza_aliada(pa,co):        #returns the color of the piece. True is for the
         if pa=="p" or pa=="r" or pa=="h" or pa=="b" or pa=="q" or pa=="k":
             return True
         return False
+
 def pawnmove(mboard,actual_turn):
     if actual_turn == "white":
         i=143
@@ -637,8 +645,38 @@ def bishoppacificmove(mboard,actual_turn):
     elif bishoppacificmoveleft(mboard,actual_turn) !=None:
         return bishoppacificmoveleft(mboard,actual_turn)
 
+def dancingqueen(mboard,actual_turn): #this function searches the queens
+    if actual_turn=="white":
+        if pawneat(mboard,actual_turn) !=None: 
+            if mboard[whatpiece(pawneat(mboard,actual_turn))]=="q":
+                return pawneat(mboard,actual_turn)
+        if rookmove(mboard,actual_turn) !=None:
+            if mboard[whatpiece(rookmove(mboard,actual_turn))]=="q":
+                return rookmove(mboard,actual_turn)
+        if bishopmove(mboard,actual_turn) !=None:
+            if mboard[whatpiece(bishopmove(mboard,actual_turn))]=="q":
+                return bishopmove(mboard,actual_turn)
+        if kingmove(mboard,actual_turn) !=None:
+            if mboard[whatpiece(kingmove(mboard,actual_turn))]=="q":
+                return kingmove(mboard,actual_turn)
+    elif actual_turn=="black":
+        if pawneat(mboard,actual_turn) !=None: 
+            if mboard[whatpiece(pawneat(mboard,actual_turn))]=="Q":
+                return pawneat(mboard,actual_turn)
+        if rookmove(mboard,actual_turn) !=None:
+            if mboard[whatpiece(rookmove(mboard,actual_turn))]=="Q":
+                return rookmove(mboard,actual_turn)
+        if bishopmove(mboard,actual_turn) !=None:
+            if mboard[whatpiece(bishopmove(mboard,actual_turn))]=="Q":
+                return bishopmove(mboard,actual_turn)
+        if kingmove(mboard,actual_turn) !=None:
+            if mboard[whatpiece(kingmove(mboard,actual_turn))]=="Q":
+                return kingmove(mboard,actual_turn)
+
 def strategy(mboard,actual_turn):
-    if pawneat(mboard,actual_turn) !=None:
+    if dancingqueen(mboard,actual_turn) !=None:
+        return dancingqueen(mboard,actual_turn)   
+    elif pawneat(mboard,actual_turn) !=None:
         return pawneat(mboard,actual_turn)
     elif rookmove(mboard,actual_turn) !=None:
         return rookmove(mboard,actual_turn)
