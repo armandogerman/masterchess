@@ -288,15 +288,15 @@ def rookmovevb(mboard,actual_turn):
 
 def rookmove(mboard,actual_turn):
     if actual_turn=="white":
-        if rookmovehw(mboard,actual_turn) !=None:
-            return rookmovehw(mboard,actual_turn)
-        elif rookmovevw(mboard,actual_turn) !=None:
+        if rookmovevw(mboard,actual_turn) !=None:
             return rookmovevw(mboard,actual_turn)
+        elif rookmovehw(mboard,actual_turn) !=None:
+            return rookmovehw(mboard,actual_turn)
     if actual_turn=="black":
-        if rookmovehb(mboard,actual_turn) !=None:
-            return rookmovehb(mboard,actual_turn)
-        elif rookmovevb(mboard,actual_turn) !=None:
+        if rookmovevb(mboard,actual_turn) !=None:
             return rookmovevb(mboard,actual_turn)
+        elif rookmovehb(mboard,actual_turn) !=None:
+            return rookmovehb(mboard,actual_turn)
 # Bishops and queens: diagonal / and \ moves UP
 def bishopmovebright(mboard,actual_turn):
     if actual_turn == "black":
@@ -674,9 +674,9 @@ def dancingqueen(mboard,actual_turn): #this function searches the queens
                 return kingmove(mboard,actual_turn)
 
 def strategy(mboard,actual_turn):
-    if dancingqueen(mboard,actual_turn) !=None:
-        return dancingqueen(mboard,actual_turn)   
-    elif pawneat(mboard,actual_turn) !=None:
+#    if dancingqueen(mboard,actual_turn) !=None:
+#        return dancingqueen(mboard,actual_turn)   
+    if pawneat(mboard,actual_turn) !=None:
         return pawneat(mboard,actual_turn)
     elif rookmove(mboard,actual_turn) !=None:
         return rookmove(mboard,actual_turn)
