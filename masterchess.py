@@ -9,12 +9,6 @@ def position(i):                #this function transform the chessboard and retu
         colum = i-(j*16)
         if colum<16 and colum>=0:
             return j,colum
-def whatpiece(position):                #this function transform the chessboard and returns (x,y) coordinates
-    if position == None:
-        return None
-    positionto = position[1]
-    i=int(positionto[1]+positionto[0]*16)
-    return i
 
 def pieza_aliada(pa,co):        #returns the color of the piece. True is for the aliated piece.
     if co=="white":
@@ -25,7 +19,7 @@ def pieza_aliada(pa,co):        #returns the color of the piece. True is for the
         if pa=="p" or pa=="r" or pa=="h" or pa=="b" or pa=="q" or pa=="k":
             return True
         return False
-
+# pawn
 def pawnmove(mboard,actual_turn):
     if actual_turn == "white":
         i=143
@@ -65,10 +59,7 @@ def pawneat(mboard,actual_turn):
                     if not(pieza_aliada(mboard[i-17],actual_turn)):
                         if position(i-17)[0] == position(i-16)[0]:
                             return position(i), position(i-17)
-            elif i>=247:
-                return None            
             i+=1
-        return None
     elif actual_turn == "black":
         n=0
         while n<=255:
@@ -82,33 +73,34 @@ def pawneat(mboard,actual_turn):
                     if not(pieza_aliada(mboard[i+17],actual_turn)):
                         if position(i+17)[0] == position(i+16)[0]:
                             return position(i), position(i+17)
-                elif i>=255:
-                    return None 
+                elif i>255:
+                    return None
             n+=1
- 
+# Select pawn 
 def select_pawn(mboard,actual_turn):
     if pawneat(mboard,actual_turn) != None:
         return pawneat(mboard,actual_turn)
     elif pawnmove(mboard,actual_turn) != None and pawneat(mboard,actual_turn) == None:
         return pawnmove(mboard,actual_turn)
-# rooks and queens: horizontal and vertical moves
+# Rooks and queens: horizontal and vertical moves
+# Rook move Horizontal White
 def rookmovehwleft(mboard,actual_turn):
     if actual_turn == "white":
         i=0
         while i<=255:
             if mboard[i] == 'R' or mboard[i] =='Q':
-                n=0
+                n=1
                 while n<=16:
                     if (i-n)<=255 and (i-n)>=0:
                         if mboard[i] != ' ':
                             if pieza_aliada(mboard[i-n],actual_turn):
                                 i=257
-                                n=17
-                            elif not pieza_aliada(mboard[i-n],actual_turn):
-                                if position(i-n)[0] == position(i-n)[0]:
+                                return None 
+                            if not pieza_aliada(mboard[i-n],actual_turn):
+                                if position(i)[0] == position(i-n)[0]:
                                     return position(i), position(i-n)
-                        i=255
-                        return None       
+                        if n<0 or n>=255:
+                            return None    
                     n+=1
             i+=1
 def rookmovehwright(mboard,actual_turn):
@@ -116,78 +108,33 @@ def rookmovehwright(mboard,actual_turn):
         i=0
         while i<=255:
             if mboard[i] == 'R' or mboard[i] =='Q':
-                n=0
+                n=1
                 while n<=16:
                     if (i+n)<=255 and (i+n)>=0:
                         if mboard[i+n] != ' ':
-                            if pieza_aliada(mboard[i+n],actual_turn):
+                            if (pieza_aliada(mboard[i+n],actual_turn)):    
                                 i=257
-                                n=17    
-                            elif not(pieza_aliada(mboard[i+n],actual_turn)):
+                                return None 
+                            if not(pieza_aliada(mboard[i+n],actual_turn)):
                                 if position(i)[0] == position(i+n)[0]:
                                     return position(i), position(i+n)
-                        i=255
-                        return None       
+                        if i>=255:
+                            return None   
                     n+=1
             i+=1
 def rookmovehw(mboard,actual_turn):
     if rookmovehwleft(mboard,actual_turn) !=None:
         return rookmovehwleft(mboard,actual_turn)
-    elif rookmovehwright(mboard,actual_turn) != None:
+    if rookmovehwright(mboard,actual_turn) != None:
         return rookmovehwright(mboard,actual_turn)
-
-def rookmovehbleft(mboard,actual_turn):
-        j=0
-        while j<=255:
-            i=255-j
-            if mboard[i] =='r' or mboard[i] =='q':
-                n=1
-                while n<=16:
-                    if (i-n)<=255 and (i-n)>=0:
-                        if mboard[i-n] != ' ':
-                            if pieza_aliada(mboard[i-n],actual_turn):
-                                i=257
-                                n=17
-                            elif not(pieza_aliada(mboard[i-n],actual_turn)):
-                                if position(i-n)[0] == position(i-n)[0]:
-                                    return position(i), position(i-n)       
-                    n+=1
-            j+=1
-def rookmovehbright(mboard,actual_turn):
-    if actual_turn == "black":
-        j=0
-        while j<=255:
-            i=255-j
-            if mboard[i] =='r' or mboard[i] =='q':
-                n=0
-                while n<=16:
-                    if (i+n)<=256 and (i+n)>=0:
-                        if mboard[i+n] != ' ':
-                            if pieza_aliada(mboard[i+n],actual_turn):
-                                i=257
-                                n=17       
-                            elif not(pieza_aliada(mboard[i+n],actual_turn)):
-                                if position(i)[0] == position(i+n)[0]:
-                                    if mboard[i] == 'R' or mboard[i] == 'r':
-                                        print("rookmovehbright rook: x+",i,"y+",n)
-                                    if mboard[i] == 'Q' or mboard[i] == 'q':
-                                        print("rookmovehbright queen: x+",i,"y+",n)
-                                    return position(i), position(i+n)
-                        j = 255
-                        return None       
-                    n += 1
-            j += 1
-def rookmovehb(mboard,actual_turn):
-    if rookmovehbleft(mboard,actual_turn) !=None:
-        return rookmovehbleft(mboard,actual_turn)
-    elif rookmovehbright(mboard,actual_turn) != None:
-        return rookmovehbright(mboard,actual_turn)
-
+# Rook move Vertical White
 def rookmovevwdown(mboard,actual_turn):
     if actual_turn == "white":
         i=0
         while i<=256:
-            if mboard[i] == 'R' or mboard[i] =='Q':
+            if i>256 or i<0:
+                return None            
+            elif mboard[i] == 'R' or mboard[i] =='Q':
                 n=1
                 while n<=16:
                     if (i+n*16)<=255 and (i+n*16)>=0:
@@ -202,19 +149,21 @@ def rookmovevwdown(mboard,actual_turn):
                                     i=257
                                     n=17
                                     return rta
-                        elif i+n*16>=239:
-                            i=257
-                            return
+                    elif i+n*16>=256:
+                        i=257
+                        return None
                     n+=1
             i+=1
 def rookmovevwup(mboard,actual_turn):
-    if actual_turn == "white":    
+    if actual_turn == "white":
         i=0
-        while i <= 256:
-            if mboard[i] == 'R' or mboard[i] =='Q':
+        while i<=256:
+            if i>256 or i<0:
+                return None            
+            elif mboard[i] == 'R' or mboard[i] =='Q':
                 n = 1
-                while n <= 16:
-                    if (i - n*16) <= 255 and (i - n*16) >= 0:
+                while n<=16:
+                    if (i-n*16) <= 255 and (i-n*16) >= 0:
                         if mboard[i-n*16] != ' ':
                             if pieza_aliada(mboard[i-n*16],actual_turn):
                                 i=257
@@ -226,14 +175,61 @@ def rookmovevwup(mboard,actual_turn):
                                     i=257
                                     n=17
                                     return rta
-                    n += 1
-            i += 1                               
+                    elif i-n*16<=0:
+                        i=257
+                        return None
+                    n+=1
+            i+=1                         
 def rookmovevw(mboard,actual_turn):
     if rookmovevwup(mboard,actual_turn) !=None:
         return rookmovevwup(mboard,actual_turn)
-    elif rookmovevwdown(mboard,actual_turn) != None:
+    if rookmovevwdown(mboard,actual_turn) != None:
         return rookmovevwdown(mboard,actual_turn)
-
+# Rook move Horizontal Black
+def rookmovehbleft(mboard,actual_turn):
+        j=0
+        while j<=255:
+            i=255-j
+            if mboard[i] =='r' or mboard[i] =='q':
+                n=1
+                while n<=16:
+                    if (i-n)<=255 and (i-n)>=0:
+                        if mboard[i-n] != ' ':
+                            if pieza_aliada(mboard[i-n],actual_turn):
+                                i=257
+                                n=17
+                            elif not(pieza_aliada(mboard[i-n],actual_turn)):
+                                if position(i)[0] == position(i-n)[0]:
+                                    return position(i), position(i-n)       
+                    n+=1
+            j+=1
+def rookmovehbright(mboard,actual_turn):
+    if actual_turn == "black":
+        j=0
+        while j<=255:
+            i=255-j
+            if mboard[i] =='r' or mboard[i] =='q':
+                n=1
+                while n<=16:
+                    if (i+n)<=256 and (i+n)>=0:
+                        if mboard[i+n] != ' ':
+                            if pieza_aliada(mboard[i+n],actual_turn):
+                                i=257
+                                n=17
+                            elif not(pieza_aliada(mboard[i+n],actual_turn)):
+                                if position(i)[0] == position(i+n)[0]:
+                                    return position(i), position(i+n)
+                        if i+n>=255:
+                            j = 257
+                            return None     
+                    n += 1
+            j += 1
+def rookmovehb(mboard,actual_turn):
+    if rookmovehbleft(mboard,actual_turn) !=None:
+        return rookmovehbleft(mboard,actual_turn)
+    if rookmovehbright(mboard,actual_turn) != None:
+        return rookmovehbright(mboard,actual_turn)
+# Rook move Vertical Black
 def rookmovevbdown(mboard,actual_turn):
     if actual_turn == "black":
         j=0
@@ -244,7 +240,7 @@ def rookmovevbdown(mboard,actual_turn):
                 while n<= 16:
                     if (i+n*16)<=255 and (i+n*16)>=0:
                         if mboard[i+n*16] != ' ':
-                            if pieza_aliada(mboard[i+n*16],actual_turn): #verifico abajo
+                            if pieza_aliada(mboard[i+n*16],actual_turn):
                                 j=257
                                 n=17
                             elif not (pieza_aliada(mboard[i+n*16],actual_turn)):
@@ -266,11 +262,11 @@ def rookmovevbup(mboard,actual_turn):
                 n=1
                 while n<=16:
                     if (i-n*16)<=255 and (i-n*16)>=0:
-                        if mboard[i-n*16] != ' ' and not(pieza_aliada(mboard[i-n*16],actual_turn)): #verifico arriba
-                            if pieza_aliada(mboard[i-n*16],actual_turn): #verifico abajo
+                        if mboard[i-n*16] != ' ' and not(pieza_aliada(mboard[i-n*16],actual_turn)):
+                            if pieza_aliada(mboard[i-n*16],actual_turn):
                                 j=257
                                 n=17
-                            elif not(pieza_aliada(mboard[i-n*16],actual_turn)): #verifico abajo    
+                            elif not(pieza_aliada(mboard[i-n*16],actual_turn)):   
                                 if position(i)[1] == position(i-n*16)[1]:
                                     rta = position(i), position(i-n*16)
                                     j=257
@@ -283,21 +279,23 @@ def rookmovevbup(mboard,actual_turn):
 def rookmovevb(mboard,actual_turn):
     if rookmovevbdown(mboard,actual_turn) !=None:
         return rookmovevbdown(mboard,actual_turn)
-    elif rookmovevbup(mboard,actual_turn) != None:
+    if rookmovevbup(mboard,actual_turn) != None:
         return rookmovevbup(mboard,actual_turn)
-
+# Select rook and queen move
 def rookmove(mboard,actual_turn):
     if actual_turn=="white":
+        if rookmovehw(mboard,actual_turn) !=None:
+            return rookmovehw(mboard,actual_turn)
         if rookmovevw(mboard,actual_turn) !=None:
             return rookmovevw(mboard,actual_turn)
-        elif rookmovehw(mboard,actual_turn) !=None:
-            return rookmovehw(mboard,actual_turn)
     if actual_turn=="black":
+        if rookmovehb(mboard,actual_turn) !=None:
+            return rookmovehb(mboard,actual_turn)
         if rookmovevb(mboard,actual_turn) !=None:
             return rookmovevb(mboard,actual_turn)
-        elif rookmovehb(mboard,actual_turn) !=None:
-            return rookmovehb(mboard,actual_turn)
+
 # Bishops and queens: diagonal / and \ moves UP
+# Bishop move black UP
 def bishopmovebright(mboard,actual_turn):
     if actual_turn == "black":
         j=0
@@ -338,6 +336,7 @@ def bishopmovebleft(mboard,actual_turn):
                         return None       
                     n+=1
             j+=1 
+# Bishop move white UP
 def bishopmovewright(mboard,actual_turn):
     if actual_turn == "white":
         #rook move horizontal line
@@ -434,7 +433,7 @@ def bishopmovewrightdown(mboard,actual_turn):
                         elif (i+(n*17)+17)>=255:
                             return None
                     n+=1
-            i+=1 
+            i+=1
 def bishopmovewleftdown(mboard,actual_turn):
     if actual_turn == "white":
         i=0
@@ -453,7 +452,7 @@ def bishopmovewleftdown(mboard,actual_turn):
                                     return position(i), position(i-(n*15))
                     n+=1
             i+=1   
-
+# Select bishop and queen move
 def bishopmove(mboard,actual_turn):
     if actual_turn=="white":
         if bishopmovewright(mboard,actual_turn) !=None:
@@ -473,7 +472,7 @@ def bishopmove(mboard,actual_turn):
             return bishopmovebrightdown(mboard,actual_turn)
         elif bishopmovebleftdown(mboard,actual_turn) !=None:
             return bishopmovebleftdown(mboard,actual_turn)
-
+# long live the king
 def kingmove(mboard,actual_turn):
     if actual_turn == "white":
         i=0
@@ -482,80 +481,80 @@ def kingmove(mboard,actual_turn):
                     if (i-1)<=255 and (i-1)>=0:
                         if mboard[(i-1)] != ' ':
                             if not(pieza_aliada(mboard[(i-1)],actual_turn)):
-                                    return position(i), position(i-1)
-                    elif (i+1)<=255 and (i+1)>=0:
+                                return position(i), position(i-1)
+                    if (i+1)<=255 and (i+1)>=0:
                         if mboard[(i+1)] != ' ':
                             if not(pieza_aliada(mboard[(i+1)],actual_turn)):
-                                    return position(i), position(i+1)
-                    elif (i+16)<=255 and (i+16)>=0:
+                                return position(i), position(i+1)
+                    if (i+16)<=255 and (i+16)>=0:
                         if mboard[(i+16)] != ' ':
                             if not(pieza_aliada(mboard[(i+16)],actual_turn)):
-                                    return position(i), position(i+16)
-                    elif (i-16)<=255 and (i-16)>=0:
+                                return position(i), position(i+16)
+                    if (i-16)<=255 and (i-16)>=0:
                         if mboard[(i-16)] != ' ':
                             if not(pieza_aliada(mboard[(i-16)],actual_turn)):
-                                    return position(i), position(i-16)
-                    elif (i+17)<=255 and (i+17)>=0:
+                                return position(i), position(i-16)
+                    if (i+17)<=255 and (i+17)>=0:
                         if mboard[(i+17)] != ' ':
                             if not(pieza_aliada(mboard[(i+17)],actual_turn)):
-                                    return position(i), position(i+17)
-                    elif (i-17)<=255 and (i-17)>=0:
+                                return position(i), position(i+17)
+                    if (i-17)<=255 and (i-17)>=0:
                         if mboard[(i-17)] != ' ':
                             if not(pieza_aliada(mboard[(i-17)],actual_turn)):
-                                    return position(i), position(i-17)
-                    elif (i-15)<=255 and (i-15)>=0:
+                                return position(i), position(i-17)
+                    if (i-15)<=255 and (i-15)>=0:
                         if mboard[(i-15)] != ' ':
                             if not(pieza_aliada(mboard[(i-15)],actual_turn)):
-                                    return position(i), position(i-15)
-                    elif (i+15)<=255 and (i+15)>=0:
+                                return position(i), position(i-15)
+                    if (i+15)<=255 and (i+15)>=0:
                         if mboard[(i+15)] != ' ':
                             if not(pieza_aliada(mboard[(i+15)],actual_turn)):
-                                    return position(i), position(i+15)
+                                return position(i), position(i+15)
             elif i>=247:
                 return None
             i+=1
     elif actual_turn == "black":
-        i=0
-        while i<=255:
+        j=0
+        while j<=255:
+            i=255-j
             if mboard[i] =='k':
-                    if (i-1)<=255 and (i-1)>=0:
-                        if mboard[(i-1)] != ' ':
-                            if not(pieza_aliada(mboard[(i-1)],actual_turn)):
-                                    return position(i), position(i-1)
-                    elif(i+1)<=255 and (i+1)>=0:
-                        if mboard[(i+1)] != ' ':
-                            if not(pieza_aliada(mboard[(i+1)],actual_turn)):
-                                    return position(i), position(i+1)
-                    elif (i+16)<=255 and (i+16)>=0:
-                        if mboard[(i+16)] != ' ':
-                            if not(pieza_aliada(mboard[(i+16)],actual_turn)):
-                                    return position(i), position(i+16)
-                    elif (i-16)<=255 and (i-16)>=0:
-                        if mboard[(i-16)] != ' ':
-                            if not(pieza_aliada(mboard[(i-16)],actual_turn)):
-                                    return position(i), position(i-16)
-                    elif (i+17)<=255 and (i+17)>=0:
-                        if mboard[(i+17)] != ' ':
-                            if not(pieza_aliada(mboard[(i+17)],actual_turn)):
-                                    return position(i), position(i+17)
-                    elif (i-17)<=255 and (i-17)>=0:
-                        if mboard[(i-17)] != ' ':
-                            if not(pieza_aliada(mboard[(i-17)],actual_turn)):
-                                    return position(i), position(i-17)
-                    elif (i-15)<=255 and (i-15)>=0:
-                        if mboard[(i-15)] != ' ':
-                            if not(pieza_aliada(mboard[(i-15)],actual_turn)):
-                                    return position(i), position(i-15)
-                    elif (i+15)<=255 and (i+15)>=0:
-                        if mboard[(i+15)] != ' ':
-                            if not(pieza_aliada(mboard[(i+15)],actual_turn)):
-                                    return position(i), position(i+15)
-
-            elif i<=255:
+                if (i-1)<=255 and (i-1)>=0:
+                    if mboard[(i-1)] != ' ':
+                        if not(pieza_aliada(mboard[(i-1)],actual_turn)):
+                            return position(i), position(i-1)
+                if(i+1)<=255 and (i+1)>=0:
+                    if mboard[(i+1)] != ' ':
+                        if not(pieza_aliada(mboard[(i+1)],actual_turn)):
+                            return position(i), position(i+1)
+                if (i+16)<=255 and (i+16)>=0:
+                    if mboard[(i+16)] != ' ':
+                        if not(pieza_aliada(mboard[(i+16)],actual_turn)):
+                            return position(i), position(i+16)
+                if (i-16)<=255 and (i-16)>=0:
+                    if mboard[(i-16)] != ' ':
+                        if not(pieza_aliada(mboard[(i-16)],actual_turn)):
+                            return position(i), position(i-16)
+                if (i+17)<=255 and (i+17)>=0:
+                    if mboard[(i+17)] != ' ':
+                        if not(pieza_aliada(mboard[(i+17)],actual_turn)):
+                            return position(i), position(i+17)
+                if (i-17)<=255 and (i-17)>=0:
+                    if mboard[(i-17)] != ' ':
+                        if not(pieza_aliada(mboard[(i-17)],actual_turn)):
+                            return position(i), position(i-17)
+                if (i-15)<=255 and (i-15)>=0:
+                    if mboard[(i-15)] != ' ':
+                        if not(pieza_aliada(mboard[(i-15)],actual_turn)):
+                            return position(i), position(i-15)
+                if (i+15)<=255 and (i+15)>=0:
+                    if mboard[(i+15)] != ' ':
+                        if not(pieza_aliada(mboard[(i+15)],actual_turn)):
+                            return position(i), position(i+15)
+            elif j>=255 or j<=0:
                 if mboard[i] == ' ':
                     return None
-            i+=1 
-
+            j+=1 
+# pacific mode. move the piece when don't have eat option
 def rookpacificmovehwleft(mboard,actual_turn):
     if actual_turn == "white":
         i=0
@@ -563,18 +562,21 @@ def rookpacificmovehwleft(mboard,actual_turn):
             if mboard[i] == 'R' or mboard[i] =='Q':
                 if (i-1)<=255 and (i-1)>=0:
                     if mboard[i-1] == ' ':
+                        if position(i)[0] == position(i-1)[0]:
                             return position(i), position(i-1)
-                    return None       
             i+=1
     elif actual_turn == "black":
-        i=0
-        while i<=255:
+        j=0
+        while j<=255:
+            i=255-j
             if mboard[i] == 'r' or mboard[i] =='q':
                 if (i-1)<=255 and (i-1)>=0:
                     if mboard[i-1] == ' ':
+                        if position(i)[0] == position(i-1)[0]:
                             return position(i), position(i-1)
-                    return None       
-            i+=1
+                if i>=255 or i<=0: 
+                    return None  
+            j+=1
 def rookpacificmovehwright(mboard,actual_turn):
     if actual_turn == "white":
         i=0
@@ -582,18 +584,23 @@ def rookpacificmovehwright(mboard,actual_turn):
             if mboard[i] == 'R' or mboard[i] =='Q':
                 if (i+1)<=255 and (i+1)>=0:
                     if mboard[i+1] == ' ':
+                        if position(i)[0] == position(i-1)[0]:
                             return position(i), position(i+1)
-                    return None       
+                    if i>=255 or i<=0:
+                        return None       
             i+=1
     elif actual_turn == "black":
-        i=0
-        while i<=255:
+        j=0
+        while j<=255:
+            i=255-j
             if mboard[i] == 'r' or mboard[i] =='q':
                 if (i+1)<=255 and (i+1)>=0:
                     if mboard[i+1] == ' ':
+                        if position(i)[0] == position(i-1)[0]:
                             return position(i), position(i+1)
+                if i>=255 or i<=0:
                     return None       
-            i+=1
+            j+=1
 def rookpacificmove(mboard,actual_turn):
     if rookpacificmovehwleft(mboard,actual_turn) !=None:
         return rookpacificmovehwleft(mboard,actual_turn)
@@ -645,50 +652,27 @@ def bishoppacificmove(mboard,actual_turn):
     elif bishoppacificmoveleft(mboard,actual_turn) !=None:
         return bishoppacificmoveleft(mboard,actual_turn)
 
-def dancingqueen(mboard,actual_turn): #this function searches the queens
-    if actual_turn=="white":
-        if pawneat(mboard,actual_turn) !=None: 
-            if mboard[whatpiece(pawneat(mboard,actual_turn))]=="q":
-                return pawneat(mboard,actual_turn)
-        if rookmove(mboard,actual_turn) !=None:
-            if mboard[whatpiece(rookmove(mboard,actual_turn))]=="q":
-                return rookmove(mboard,actual_turn)
-        if bishopmove(mboard,actual_turn) !=None:
-            if mboard[whatpiece(bishopmove(mboard,actual_turn))]=="q":
-                return bishopmove(mboard,actual_turn)
-        if kingmove(mboard,actual_turn) !=None:
-            if mboard[whatpiece(kingmove(mboard,actual_turn))]=="q":
-                return kingmove(mboard,actual_turn)
-    elif actual_turn=="black":
-        if pawneat(mboard,actual_turn) !=None: 
-            if mboard[whatpiece(pawneat(mboard,actual_turn))]=="Q":
-                return pawneat(mboard,actual_turn)
-        if rookmove(mboard,actual_turn) !=None:
-            if mboard[whatpiece(rookmove(mboard,actual_turn))]=="Q":
-                return rookmove(mboard,actual_turn)
-        if bishopmove(mboard,actual_turn) !=None:
-            if mboard[whatpiece(bishopmove(mboard,actual_turn))]=="Q":
-                return bishopmove(mboard,actual_turn)
-        if kingmove(mboard,actual_turn) !=None:
-            if mboard[whatpiece(kingmove(mboard,actual_turn))]=="Q":
-                return kingmove(mboard,actual_turn)
-
 def strategy(mboard,actual_turn):
-#    if dancingqueen(mboard,actual_turn) !=None:
-#        return dancingqueen(mboard,actual_turn)   
     if pawneat(mboard,actual_turn) !=None:
+        print("pawneat")
         return pawneat(mboard,actual_turn)
+    elif kingmove(mboard,actual_turn) !=None:
+        print("kingmove")
+        return kingmove(mboard,actual_turn)
     elif rookmove(mboard,actual_turn) !=None:
+        print("rookmove")
         return rookmove(mboard,actual_turn)
     elif bishopmove(mboard,actual_turn) !=None:
+        print("bishopmove")
         return bishopmove(mboard,actual_turn)
-    elif kingmove(mboard,actual_turn) !=None:
-        return kingmove(mboard,actual_turn)
     elif select_pawn(mboard,actual_turn) != None:
+        print("select_pawn")
         return select_pawn(mboard,actual_turn)
     elif rookpacificmove(mboard,actual_turn) != None:
+        print("rookpacificmove")
         return rookpacificmove(mboard,actual_turn)
     elif bishoppacificmove(mboard,actual_turn) != None:
+        print("bishoppacificmove")
         return bishoppacificmove(mboard,actual_turn)
 
 async def send(websocket, action, data):
